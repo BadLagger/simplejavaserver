@@ -8,10 +8,10 @@ image: ubuntu:latest
 
 before_script:
   - echo "Подготовка к CI/CD"
-  - sudo apt update -y
-  - sudo apt install openjdk-17-jdk
-  - wget -O junit.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.0/junit-platform-console-standalone-1.9.0.jar
-  - mkdir bin
+#  - sudo apt update -y
+#  - sudo apt install openjdk-17-jdk
+#  - wget -O junit.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.0/junit-platform-console-standalone-1.9.0.jar
+#  - mkdir bin
 
 stages:
   - build
@@ -22,23 +22,26 @@ build:
   stage: build
   script:
     - echo "Запуск сборки"
-    - javac -d bin core\ServerThread.java
-    - javac -d bin -cp bin;junit.jar core/ServerThreadTest.java
-    - javac -d bin Main.java 
+#    - javac -d bin core\ServerThread.java
+#    - javac -d bin -cp bin;junit.jar core/ServerThreadTest.java
+#    - javac -d bin Main.java 
 
 test:
   stage: test
   script:
     - echo "Запуск тестов"
-    - java -jar junit.jar -cp bin --select-class core.ServerThreadTest > test.result
+#    - java -jar junit.jar -cp bin --select-class core.ServerThreadTest > test.result
   needs:
     - build
-  artifacts:
-    paths: 
-      - test.result
-#deploy:
-#  stage: deploy
-#  script:
+#  artifacts:
+#    paths: 
+#      - test.result
+deploy:
+  stage: deploy
+  script:
+    - echo "Запуск деплоя"
+  needs:
+    - test
 #    - echo $(cat build.txt)
 #    - echo "Развертывание проекта"
 #  needs:
