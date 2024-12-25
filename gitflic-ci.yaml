@@ -29,8 +29,7 @@ test job:
   script:
     - echo "Запуск тестов"
 #    - java -jar junit.jar -cp bin --select-class core.ServerThreadTest > test.result
-  needs:
-    - build
+  needs: ["build job"]
 #  artifacts:
 #    paths: 
 #      - test.result
@@ -38,8 +37,7 @@ deploy job:
   stage: deploy
   script:
     - echo "Запуск деплоя"
-  needs:
-    - test
+  needs: ["test job"]
 #    - echo $(cat build.txt)
 #    - echo "Развертывание проекта"
 #  needs:
