@@ -1,15 +1,15 @@
+package core;
+
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 
-class ServerThread implements  Runnable {
+public class ServerThread implements  Runnable {
 	private boolean isRun;
 	private Thread  thread;
 	private HttpServer server;
@@ -33,19 +33,23 @@ class ServerThread implements  Runnable {
 		}
 	}
 	
-	public void start() {
+	public boolean start() {
 		if (!isRun) {
 			isRun = true;
 			thread.start();
+			return true;
 		}
+		return false;
 	}
 	
-	public void stop() throws InterruptedException {
+	public boolean stop() throws InterruptedException {
 		if (isRun) {
 			isRun = false;
 			server.stop(0);
 			thread.join();
+			return true;
 		}
+		return false;
 	}
 	
 	public boolean inRun() {
@@ -83,39 +87,3 @@ class ServerThread implements  Runnable {
 	}
 }
 
-public class Main {
-	
-	public static void main(String[] args) throws IOException, InterruptedException {
-		Scanner scanner = new Scanner(System.in);
-		boolean exit = false;
-		ServerThread server = new ServerThread();
-		
-		System.out.println("SimpleServer!");
-		InetAddress lAddr = InetAddress.getLocalHost();
-		System.out.println("Address: " + lAddr);
-		
-		server.start();
-		
-		while(server.inRun());
-		/*while(!exit) {
-			String input = scanner.nextLine();
-			
-			switch(input) {
-			case "exit":
-				server.stop();
-				exit = true;
-				continue;
-			case "run":
-				if (server.inRun())
-					System.out.println("Already in run!");
-				else
-					server.start();
-				break;
-			}
-		}*/
-		
-		scanner.close();
-		
-		System.out.println("DONE!!!");
-	}
-}
