@@ -4,8 +4,6 @@
 # Подробнее о синтаксисе можно узнать в документации:
 # https://docs.gitflic.ru/cicd/gitflic-ci-yaml
 
-image: ubuntu:latest
-
 before_script:
   - echo "Подготовка к CI/CD"
 #  - sudo apt update -y
@@ -18,7 +16,7 @@ stages:
   - test
   - deploy
 
-build:
+build job:
   stage: build
   script:
     - echo "Запуск сборки"
@@ -26,7 +24,7 @@ build:
 #    - javac -d bin -cp bin;junit.jar core/ServerThreadTest.java
 #    - javac -d bin Main.java 
 
-test:
+test job:
   stage: test
   script:
     - echo "Запуск тестов"
@@ -36,7 +34,7 @@ test:
 #  artifacts:
 #    paths: 
 #      - test.result
-deploy:
+deploy job:
   stage: deploy
   script:
     - echo "Запуск деплоя"
