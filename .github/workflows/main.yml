@@ -29,16 +29,16 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - run: |
-        echo "Build main!"
-        javac -d bin Main.java
+          echo "Build main!"
+          javac -d bin Main.java
   test:
     name: Test with JUnit
     needs: build_test
     runs-on: ubuntu-22.04
     steps:
       - run: |
-        echo "Run test!"
-        java -jar ./junit.jar -cp bin --select-class core.ServerThreadTest
+          echo "Run test!"
+          java -jar ./junit.jar -cp bin --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
     needs: [build_main, test]
