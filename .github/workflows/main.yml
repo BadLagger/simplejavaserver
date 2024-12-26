@@ -64,14 +64,13 @@ jobs:
     needs: [build, test]
     runs-on: ubuntu-22.04
     steps:
-      - run: echo "Run deploy!"
-  clean:
-    name: Cleanning some artifacts
-    runs-on: ubuntu-22.04
-    if: always()
-    needs: [build, test, deploy]
-    steps:
-      - name: Delete JUnit artifact
-        uses: geekyeggo/delete-artifact@v1
+      - name: Save ssh keys to files
+        run: |
+          echo ${{ secrets.SSH_PRIVATE_KEY }} > key
+          echo ${{ secrets.SSH_PUBLIC_KEY }} > key.pub
+      - name: Restore builds
+        uses: actions/download-artifact@v4
         with:
-          name: junit
+          name: builds
+      - name: Try to stop server
+        run: ssh -i ./key badlagger@158.160.159.239 "touch exit.state"
