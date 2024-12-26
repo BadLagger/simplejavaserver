@@ -61,9 +61,9 @@ jobs:
     name: Test with JUnit on Windows
     needs: build
     runs-on: windows-2022
-    shell: pwsh
     steps:
       - name: Install OpenJDK
+        shell: pwsh
         run: |
           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
           Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
@@ -78,6 +78,7 @@ jobs:
         with:
           name: builds
       - name: Start JUnit tests
+        shell: pwsh
         run: java -jar junit.jar -cp .\ --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
