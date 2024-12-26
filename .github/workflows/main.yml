@@ -19,7 +19,8 @@ jobs:
           sudo apt update
           sudo apt install -y openjdk-17-jdk
           sudo mkdir bin
-          javac -d bin core\ServerThread.java
+          ls -al
+          javac -d bin core/ServerThread.java
           wget -O junit.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.0/junit-platform-console-standalone-1.9.0.jar
           javac -d bin -cp bin;junit.jar core/ServerThreadTest.java
           java -jar junit.jar -cp bin --select-class core.ServerThreadTest
