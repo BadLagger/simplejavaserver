@@ -71,8 +71,8 @@ jobs:
       - name: Try to stop server and delete old files
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: 158.160.159.239
-          username: badlagger
+          host: ${{ secrets.DEPLOY_IP }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             touch app/exit.state
@@ -82,8 +82,17 @@ jobs:
       - name: Try to copy App to the server
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: 158.160.159.239
-          username: badlagger
+          host: ${{ secrets.DEPLOY_IP }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "*.class,core/*.class,!core/*Test.class"
           target: "/home/badlagger/app"
+      - name: Try to run App
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_IP }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd app
+            java Main &
