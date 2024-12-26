@@ -1,6 +1,8 @@
 *
 
 !*.java
+!*.yaml
 !.gitignore
 !.project
 !core/
+!.github/workflow/
