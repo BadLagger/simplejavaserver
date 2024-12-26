@@ -79,11 +79,11 @@ jobs:
             sleep 2
             rm -rf app
             mkdir -p app/core
-     - name: Try to copy App to the server
-       uses: appleboy/scp-action@v0.1.7
-       with:
-         host: 158.160.159.239
-         username: badlagger
-         key: ${{ secrets.SSH_PRIVATE_KEY }}
-         source: "*.class,core/*.class,!core/*Test.class"
-         target: "/home/badlagger/app"
+      - name: Try to copy App to the server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 158.160.159.239
+          username: badlagger
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "*.class,core/*.class,!core/*Test.class"
+          target: "/home/badlagger/app"
