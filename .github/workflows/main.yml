@@ -38,8 +38,8 @@ jobs:
         with:
           name: builds
           path: bin
-  test:
-    name: Test with JUnit
+  test_linux:
+    name: Test with JUnit on Linux
     needs: build
     runs-on: ubuntu-22.04
     steps:
@@ -55,13 +55,33 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: builds
-      - name: Check restores
-        run: ls -al
       - name: Start JUnit tests
         run: java -jar junit.jar -cp ./ --select-class core.ServerThreadTest
+  test_windows:
+    name: Test with JUnit on Windows
+    needs: build
+    runs-on: windows-2022
+    shell: pwsh
+    steps:
+      - name: Install OpenJDK
+        runs: |
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+          Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+          scoop bucket add java
+          scoop install openjdk
+      - name: Restore JUnit
+        uses: actions/download-artifact@v4
+        with:
+          name: junit
+      - name: Restore builds
+        uses: actions/download-artifact@v4
+        with:
+          name: builds
+      - name: Start JUnit tests
+        run: java -jar junit.jar -cp .\ --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
-    needs: [build, test]
+    needs: [build, test_linux, test_windows]
     runs-on: ubuntu-22.04
     steps:
       - name: Restore builds
