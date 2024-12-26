@@ -65,16 +65,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Save ssh keys to files
-        env:
-          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
-        run: |
-          echo $PRIVATE_KEY > key
-          echo $PUBLIC_KEY > key.pub
-      - name: Restore builds
-        uses: actions/download-artifact@v4
+        uses: appleboy/ssh-action@v1.2.0
         with:
-          name: builds
-      - name: Try to stop server
-        run: cat key
-        #run: ssh -i ./key badlagger@158.160.159.239 "touch exit.state"
+          host: 158.160.159.239
+          username: badlagger
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: touch app/exit.state
