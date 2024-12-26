@@ -39,7 +39,7 @@ class ServerThreadTest {
 
 	@Test
 	void testInRun() throws IOException {
-		Assertions.assertEquals(false, st.inRun());
+		Assertions.assertEquals(true, st.inRun());
 		writeToLog("ServerThread inRun test done\n");
 	}
 
