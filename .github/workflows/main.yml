@@ -75,7 +75,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            touch app/exit.state
+            sudo systemctl stop simple_server.service
             sleep 2
             rm -rf app
             mkdir -p app/core
@@ -94,8 +94,4 @@ jobs:
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "!#/usr/bin/bash" > run.script
-            echo "cd /home/badlagger/app" >> run.script
-            echo "java Main &" >> run.script
-            sudo chmod a+x run.script
-            ./run.script
+            sudo systemctl start simple_server.service
