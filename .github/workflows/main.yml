@@ -76,4 +76,5 @@ jobs:
         with:
           name: builds
       - name: Try to stop server
-        run: ssh -i ./key badlagger@158.160.159.239 "touch exit.state"
+        run: cat key
+        #run: ssh -i ./key badlagger@158.160.159.239 "touch exit.state"
