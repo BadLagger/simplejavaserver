@@ -67,6 +67,7 @@ jobs:
       - run: echo "Run deploy!"
   clean:
     name: Cleanning some artifacts
+    shell: bash
     if: always()
     needs: [build, test, deploy]
     steps:
