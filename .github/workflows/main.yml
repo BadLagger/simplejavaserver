@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Build classes for JUnit
+    name: Build all
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
@@ -80,7 +80,7 @@ jobs:
       - name: Start JUnit tests
         shell: pwsh
         run: |
-          java --version
+          ls ~\scoop\apps\openjdk17\current\bin
           java -jar junit.jar -cp .\ --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
