@@ -18,10 +18,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Prepare toolchain and environment
         run: |
-          sudo apt update
-          sudo apt install -y openjdk-17-jdk
+          sudo apt update 2>/dev/null
+          sudo apt install -y openjdk-17-jdk 2>/dev/null
           mkdir bin
-          wget -O junit.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.0/junit-platform-console-standalone-1.9.0.jar
+          wget -O junit.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.0/junit-platform-console-standalone-1.9.0.jar 2>/dev/null
       - name: Compile ServerThread
         run: javac -d bin core/ServerThread.java
       - name: Compile JUnit tests
@@ -45,8 +45,8 @@ jobs:
     steps:
       - name: Prepare toolchain and environment
         run: |
-          sudo apt update
-          sudo apt install -y openjdk-17-jdk
+          sudo apt update 2>/dev/null
+          sudo apt install -y openjdk-17-jdk 2>/dev/null
       - name: Restore JUnit
         uses: actions/download-artifact@v4
         with:
@@ -56,11 +56,9 @@ jobs:
         with:
           name: builds
       - name: Check restores
-        run: |
-          ls -al
-          ls -al ./bin
+        run: ls -al
       - name: Start JUnit tests
-        run: java -jar ./junit.jar -cp bin --select-class core.ServerThreadTest
+        run: java -jar junit.jar --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
     needs: [build, test]
