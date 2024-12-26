@@ -64,10 +64,26 @@ jobs:
     needs: [build, test]
     runs-on: ubuntu-22.04
     steps:
-      - name: Save ssh keys to files
+      - name: Restore builds
+        uses: actions/download-artifact@v4
+        with:
+          name: builds
+      - name: Try to stop server and delete old files
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: 158.160.159.239
           username: badlagger
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: touch app/exit.state
+          script: |
+            touch app/exit.state
+            sleep 2
+            rm -rf app
+            mkdir -p app/core
+     - name: Try to copy App to the server
+       uses: appleboy/scp-action@v0.1.7
+       with:
+         host: 158.160.159.239
+         username: badlagger
+         key: ${{ secrets.SSH_PRIVATE_KEY }}
+         source: "*.class,core/*.class,!core/*Test.class"
+         target: "/home/badlagger/app"
