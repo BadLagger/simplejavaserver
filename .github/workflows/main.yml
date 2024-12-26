@@ -80,7 +80,6 @@ jobs:
       - name: Start JUnit tests
         shell: pwsh
         run: |
-#          ls ~\scoop\apps\openjdk17\current\bin
           ~\scoop\apps\openjdk17\current\bin\java.exe -jar junit.jar -cp .\ --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
