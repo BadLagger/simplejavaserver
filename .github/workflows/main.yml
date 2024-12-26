@@ -65,3 +65,12 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - run: echo "Run deploy!"
+  clean:
+    name: Cleanning some artifacts
+    if: always()
+    needs: [build, test, deploy]
+    steps:
+      - name: Delete JUnit artifact
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: junit
