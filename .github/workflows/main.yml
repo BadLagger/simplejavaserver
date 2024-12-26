@@ -94,5 +94,8 @@ jobs:
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd app
-            java Main &
+            echo "!#/usr/bin/bash" > run.script
+            echo "cd /home/badlagger/app" >> run.script
+            echo "java Main &" >> run.script
+            sudo chmod a+x run.script
+            ./run.script
