@@ -58,7 +58,7 @@ jobs:
       - name: Check restores
         run: ls -al
       - name: Start JUnit tests
-        run: java -jar junit.jar --select-class core.ServerThreadTest
+        run: java -jar junit.jar -cp ./ --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
     needs: [build, test]
