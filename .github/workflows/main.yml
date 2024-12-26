@@ -20,23 +20,25 @@ jobs:
           sudo apt update
           sudo apt install -y openjdk-17-jdk
           mkdir bin
-          ls -al
           javac -d bin core/ServerThread.java
           wget -O junit.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.0/junit-platform-console-standalone-1.9.0.jar
-          javac -d bin -cp bin;junit.jar core/ServerThreadTest.java
-          java -jar junit.jar -cp bin --select-class core.ServerThreadTest
+          javac -d bin -cp bin:./junit.jar core/ServerThreadTest.java
   build_main:
     name: Build main application
     needs: build_test
     runs-on: ubuntu-22.04
     steps:
-      - run: echo "Build main!"
+      - run: |
+        echo "Build main!"
+        javac -d bin Main.java
   test:
     name: Test with JUnit
     needs: build_test
     runs-on: ubuntu-22.04
     steps:
-      - run: echo "Run test!"
+      - run: |
+        echo "Run test!"
+        java -jar ./junit.jar -cp bin --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
     needs: [build_main, test]
