@@ -79,7 +79,9 @@ jobs:
           name: builds
       - name: Start JUnit tests
         shell: pwsh
-        run: java -jar junit.jar -cp .\ --select-class core.ServerThreadTest
+        run: |
+          java --version
+          java -jar junit.jar -cp .\ --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
     needs: [build, test_linux, test_windows]
