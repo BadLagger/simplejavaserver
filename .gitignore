@@ -1,8 +1,8 @@
 *
 
 !*.java
-!*.yaml
+!*.yml
 !.gitignore
 !.project
 !core/
-!.github/
+!.github/workflows/ci-cd.yml
