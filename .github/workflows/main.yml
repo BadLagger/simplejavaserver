@@ -10,38 +10,56 @@ on:
       - 'master'
 
 jobs:
-  build_test:
+  build:
     name: Build classes for JUnit
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
-      - run: |
-          echo "Build test!"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Prepare toolchain and environment
+        run: |
           sudo apt update
           sudo apt install -y openjdk-17-jdk
           mkdir bin
-          javac -d bin core/ServerThread.java
           wget -O junit.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.0/junit-platform-console-standalone-1.9.0.jar
-          javac -d bin -cp bin:./junit.jar core/ServerThreadTest.java
-  build_main:
-    name: Build main application
-    needs: build_test
-    runs-on: ubuntu-22.04
-    steps:
-      - run: |
-          echo "Build main!"
-          javac -d bin Main.java
+      - name: Compile ServerThread
+        run: javac -d bin core/ServerThread.java
+      - name: Compile JUnit tests
+        run: javac -d bin -cp bin:./junit.jar core/ServerThreadTest.java
+      - name: Compile Main
+        run: javac -d bin Main.java
+      - name: Save JUnit
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit
+          path: junit.jar
+      - name: Save builds
+        uses: actions/upload-artifact@v4
+        with:
+          name: builds
+          path: bin
   test:
     name: Test with JUnit
-    needs: build_test
+    needs: build
     runs-on: ubuntu-22.04
     steps:
-      - run: |
-          echo "Run test!"
-          java -jar ./junit.jar -cp bin --select-class core.ServerThreadTest
+      - name: Prepare toolchain and environment
+        run: |
+          sudo apt update
+          sudo apt install -y openjdk-17-jdk
+      - name: Restore JUnit
+        uses: actions/download-artifact@v4
+        with:
+          name: junit
+      - name: Restore builds
+        uses: actions/download-artifact@v4
+        with:
+          name: builds
+      - name: Start JUnit tests
+        run: java -jar ./junit.jar -cp bin --select-class core.ServerThreadTest
   deploy:
     name: Deploy App
-    needs: [build_main, test]
+    needs: [build, test]
     runs-on: ubuntu-22.04
     steps:
       - run: echo "Run deploy!"
