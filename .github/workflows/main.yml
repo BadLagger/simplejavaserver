@@ -55,6 +55,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: builds
+      - name: Check restores
+        run: |
+          ls -al
+          ls -al ./bin
       - name: Start JUnit tests
         run: java -jar ./junit.jar -cp bin --select-class core.ServerThreadTest
   deploy:
